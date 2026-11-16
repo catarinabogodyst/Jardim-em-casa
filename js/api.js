@@ -142,62 +142,45 @@ async function carregarPlantasAPI() {
         console.log("Plantas carregadas:", plantas);
         return true;
 
+    
     } catch (erro) {
 
-        console.error("Erro ao carregar plantas:", erro);
+        console.error("Erro ao carregar plantas da API:", erro);
 
-        // Tentar recuperar o catálogo guardado
-        try {
+        // Usar o catálogo de demonstração já definido em plantas.js
+        if (Array.isArray(plantas) && plantas.length > 0) {
 
-            const catalogoGuardado =
-                JSON.parse(localStorage.getItem("catalogoPlantas"));
-
-            if (Array.isArray(catalogoGuardado) &&
-                catalogoGuardado.length > 0) {
-
-                plantas = catalogoGuardado;
-
-                // Recuperar as dificuldades guardadas
-                carregarDificuldadesPlantas();
-
-                preencherFiltros();
-                filtrarPlantas();
-                mostrarDetalhesJardim();
-
-                if (resultado) {
-                    resultado.textContent =
-                        "A apresentar plantas guardadas anteriormente. A ligação à API não está disponível.";
-                }
-
-                paginaPlantas = 1;
-                existemMaisPlantas = false;
-
-                if (botaoMais) {
-                    botaoMais.style.display = "none";
-                }
-
-            } else {
-
-                if (resultado) {
-                    resultado.textContent =
-                        "Não foi possível carregar as plantas: " + erro.message;
-                }
-
-            }
-
-        } catch (erroCache) {
+            preencherFiltros();
+            filtrarPlantas();
+            mostrarDetalhesJardim();
 
             if (resultado) {
                 resultado.textContent =
-                    "Não foi possível carregar as plantas nem recuperar o catálogo guardado.";
+                    "A apresentar catálogo de demonstração. A API não está disponível.";
             }
 
-            console.error("Erro ao recuperar o catálogo:", erroCache);
-        }
+            existemMaisPlantas = false;
 
-        return false;
+            if (botaoMais) {
+                botaoMais.style.display = "none";
+            }
+
+            console.log("Catálogo de demonstração carregado:", plantas);
+
+            return true;
+
+        } else {
+
+            if (resultado) {
+                resultado.textContent =
+                    "Não foi possível carregar o catálogo de plantas.";
+            }
+
+            return false;
+        }
     }
 }
+
 
 // Controlar se já existe um carregamento em curso
 let aCarregarMaisPlantas = false;
@@ -337,6 +320,61 @@ async function verDetalhesPlanta(id) {
     const modal = bootstrap.Modal.getOrCreateInstance(modalElemento);
 
     modal.show();
+
+
+    // Verificar se é uma planta de demonstração
+    const plantaDemo = plantas.find(
+        p => String(p.apiId) === String(id) && p.detalhes?.demo
+    );
+
+    if (plantaDemo) {
+
+        const dados = plantaDemo.detalhes;
+
+        document.getElementById("titulo-modal").textContent =
+            dados.common_name;
+
+        document.getElementById("cientifico-modal").textContent =
+            dados.scientific_name[0];
+
+        document.getElementById("rega-modal").textContent =
+            dados.watering;
+
+        document.getElementById("luz-modal").textContent =
+            dados.sunlight;
+
+        document.getElementById("dificuldade-modal").textContent =
+            dados.care_level;
+
+        const aviso = document.getElementById("toxicidade-modal");
+
+        aviso.className = "alert";
+
+        if (dados.poisonous_to_pets) {
+            aviso.classList.add("alert-danger");
+            aviso.textContent =
+                "Atenção! Esta planta é tóxica para animais de estimação.";
+        } else {
+            aviso.classList.add("alert-success");
+            aviso.textContent =
+                "Esta planta não é tóxica para animais de estimação.";
+        }
+
+        document.getElementById("descricao-modal").textContent =
+            dados.description;
+
+        const imagem = document.getElementById("imagem-modal");
+
+        imagem.src = dados.default_image.medium_url;
+        imagem.alt = dados.common_name;
+        imagem.style.display = "block";
+
+        carregamento.style.display = "none";
+        conteudo.style.display = "block";
+
+        return;
+    }
+
 
     carregamento.style.display = "block";
     carregamento.textContent = "A carregar informação...";
