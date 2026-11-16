@@ -27,7 +27,7 @@ let plantas = [
     {
         id: 2,
         apiId: "demo-2",
-        nome: "Jiboia",
+        nome: "Jibóia",
         nomeCientifico: "Epipremnum aureum",
         categoria: "Araceae",
         dificuldade: "Fácil",
