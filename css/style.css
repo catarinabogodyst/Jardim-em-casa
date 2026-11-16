@@ -1,0 +1,80 @@
+
+/* Estilos gerais do website */
+@font-face {
+    font-family: 'ZT Nature';
+    src: url('../fonts/zt_nature/ZTNature-Thin.ttf') format('truetype');
+    font-weight: 300;
+}
+
+@font-face {
+    font-family: 'ZT Nature';
+    src: url('../fonts/zt_nature/ZTNature-Medium.ttf') format('truetype');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'ZT Nature';
+    src: url('../fonts/zt_nature/ZTNature-Black.ttf') format('truetype');
+    font-weight: 900;
+}
+
+body {
+    font-family: 'ZT Nature', sans-serif;
+    font-weight: 500;
+}
+
+/* Área principal de apresentação */
+
+.hero {
+    background-color: #e3efdc;
+    padding: 100px 20px;
+}
+
+.hero h1 {
+    color: #285c35;
+    font-size: 42px;
+    font-weight: bold;
+}
+
+.hero p {
+    font-size: 19px;
+    margin: 20px 0;
+}
+
+/* Títulos das secções */
+
+h2 {
+    color: #285c35;
+    font-weight: bold;
+}
+
+/* Rodapé */
+
+footer {
+    margin-top: 50px;
+}
+
+
+/* Efeitos visuais nos cartões das plantas */
+.card.h-100 {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card.h-100:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Transição suave nas imagens */
+.card-img-top {
+    transition: transform 0.3s ease;
+}
+
+.card-title {
+    font-family: 'ZT Nature', sans-serif;
+}
+
+/*Botão de limpar filtros*/
+#limpar-filtros {
+    margin-bottom: 30px;
+}

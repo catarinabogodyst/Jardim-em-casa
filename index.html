@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Jardim em Casa</title>
+
+    <!-- Bootstrap: ajuda a criar um website responsivo -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- O nosso ficheiro de estilos -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Fontes-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+</head>
+
+<body>
+
+    <!-- Menu de navegação -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                Jardim em Casa
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#inicio">Início</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#meu-jardim">
+                            O Meu Jardim
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#plantas">Plantas</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#cuidados">Cuidados</a>
+                    </li>
+
+                    <li>
+                        <a class="nav-link" href="#meteorologia">Meteorologia</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contacto">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Apresentação principal -->
+    <header id="inicio" class="hero text-center">
+        <div class="container">
+            <h1>Bem-vindo ao Jardim em Casa!</h1>
+
+            <p>
+                Descobre como cultivar plantas e criar
+                o teu próprio espaço verde.
+            </p>
+
+            <a href="#plantas" class="btn btn-success btn-lg">
+                Descobrir plantas
+            </a>
+        </div>
+    </header>
+
+
+    <!-- O MEU JARDIM -->
+    <section id="meu-jardim" class="container my-5">
+
+        <h2 class="text-center mb-3">O Meu Jardim</h2>
+
+        <p class="text-center">
+            Organiza as tuas plantas pelos diferentes espaços da tua casa.
+        </p>
+
+        <!-- Criar um novo jardim -->
+        <div class="card p-4 mb-4">
+
+            <h4>Criar um novo jardim</h4>
+
+            <div class="input-group mt-3">
+
+                <input type="text" id="nome-jardim" class="form-control" placeholder="Exemplo: Jardim da Sala">
+
+                <button class="btn btn-success" onclick="criarJardim()">
+                    Criar jardim
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- Selecionar jardim -->
+        <div class="card p-4">
+
+            <h4>Os meus espaços</h4>
+
+            <select id="seletor-jardins" class="form-select mt-3" onchange="selecionarJardim()">
+                <option value="">Ainda não existem jardins</option>
+            </select>
+
+            <div id="informacao-jardim" class="mt-3">
+                <p>Cria o teu primeiro jardim para começar!</p>
+            </div>
+
+            <button class="btn btn-outline-danger mt-3" id="apagar-jardim" onclick="apagarJardim()"
+                style="display:none;">
+                Apagar este jardim
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- Catálogo de plantas id=plantas -->
+    <section id="plantas" class="container my-5">
+
+        <h2 class="text-center mb-3">Descobre as nossas plantas</h2>
+        <div class="text-center mb-4">
+            <p id="resultado-api" class="mt-3">
+                A preparar o catálogo...
+            </p>
+        </div>
+        <p class="text-center mb-4">
+            Escolhe as plantas que queres adicionar aos teus jardins.
+        </p>
+
+        <!-- Pesquisa de plantas -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-6">
+                <input type="text" id="pesquisa-plantas" class="form-control" placeholder="Pesquisar uma planta..."
+                    oninput="pesquisarPlantas()">
+            </div>
+        </div>
+
+        <!-- Filtro por categoria -->
+        <div class="mb-3">
+            <label for="filtro-categoria" class="form-label">
+                Filtrar por categoria:
+            </label>
+
+            <select id="filtro-categoria" class="form-select" onchange="filtrarPlantas()">
+                <option value="">Todas as categorias</option>
+            </select>
+        </div>
+
+        <!-- Filtro por dificuldade -->
+        <div class="mb-3">
+            <label for="filtro-dificuldade" class="form-label">
+                Filtrar por dificuldade:
+            </label>
+
+            <select id="filtro-dificuldade" class="form-select" onchange="filtrarPlantas()">
+                <option value="">Todas as dificuldades</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="ordenar-plantas" class="form-label">
+                Ordenar plantas:
+            </label>
+
+            <select id="ordenar-plantas" class="form-select" onchange="filtrarPlantas()">
+
+                <option value="">Ordem original</option>
+                <option value="az">Nome (A a Z)</option>
+                <option value="za">Nome (Z a A)</option>
+
+            </select>
+        </div>
+
+        <button id=limpar-filtros type="button" class="btn btn-outline-secondary mt-2" onclick="limparFiltros()">
+            Limpar filtros
+        </button>
+
+        <!-- Lista de plantas -->
+        <div class="row" id="lista-plantas">
+        </div>
+
+        <div class="text-center mt-4">
+            <button id="carregar-mais" class="btn btn-success" onclick="carregarMaisPlantas()" style="display: none;">
+                Carregar mais plantas
+            </button>
+        </div>
+
+    </section>
+
+    <!-- Janela com os detalhes da planta -->
+    <div class="modal fade" id="modalPlanta" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titulo-modal">
+                        Detalhes da planta
+                    </h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                    <div id="carregamento-detalhes">
+                        A carregar informação...
+                    </div>
+
+                    <div id="conteudo-detalhes" style="display: none;">
+
+                        <img id="imagem-modal" class="img-fluid rounded mb-3" alt="">
+
+                        <p><strong>Nome científico:</strong>
+                            <span id="cientifico-modal"></span>
+                        </p>
+
+                        <p><strong>Rega:</strong>
+                            <span id="rega-modal"></span>
+                        </p>
+
+                        <p><strong>Luz:</strong>
+                            <span id="luz-modal"></span>
+                        </p>
+
+                        <p><strong>Dificuldade:</strong>
+                            <span id="dificuldade-modal"></span>
+                        </p>
+
+                        <div id="toxicidade-modal" class="alert alert-warning" role="alert">
+                            Informação desconhecida.
+                        </div>
+
+                        <p><strong>Descrição:</strong></p>
+                        <p id="descricao-modal"></p>
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Fechar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Meteorologia -->
+    <section id="meteorologia" class="container my-5">
+
+        <h2 class="text-center mb-3">
+            Meteorologia para o teu jardim
+        </h2>
+
+        <p class="text-center mb-4">
+            Consulta o tempo na tua localidade e descobre se a chuva
+            poderá ajudar a regar as plantas do exterior.
+        </p>
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+
+                <div class="input-group mb-3">
+
+                    <input type="text" id="localidade" class="form-control" placeholder="Exemplo: Porto">
+
+                    <button class="btn btn-success" onclick="consultarMeteorologia()">
+                        Consultar
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div id="resultado-meteorologia" class="mt-4">
+        </div>
+
+    </section>
+
+    <!-- Cuidados -->
+    <section id="cuidados" class="container my-5">
+        <h2 class="text-center">Cuida do teu jardim</h2>
+
+        <p class="text-center">
+            Aprende a cuidar das tuas plantas e descobre
+            os melhores conselhos de jardinagem.
+        </p>
+    </section>
+
+    <!-- Contacto -->
+    <footer id="contacto" class="bg-success text-white text-center p-4">
+        <p>Jardim em Casa © 2026</p>
+        <p>Pequenos espaços, grandes jardins!</p>
+    </footer>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Os nossos ficheiros JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/plantas.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/meteorologia.js"></script>
+
+</body>
+
+</html>
